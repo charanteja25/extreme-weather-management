@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Risk Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        .risk-low { background-color: #90EE90; }
+        .risk-medium { background-color: #FFD700; }
+        .risk-high { background-color: #FF6B6B; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Weather Risk Management</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Current Weather Risk Assessment</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="risk-assessment-form">
+                            <div class="mb-3">
+                                <label for="temperature" class="form-label">Temperature (°C)</label>
+                                <input type="number" class="form-control" id="temperature" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="humidity" class="form-label">Humidity (%)</label>
+                                <input type="number" class="form-control" id="humidity" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="wind-speed" class="form-label">Wind Speed (km/h)</label>
+                                <input type="number" class="form-control" id="wind-speed" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="precipitation" class="form-label">Precipitation (mm)</label>
+                                <input type="number" class="form-control" id="precipitation" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="pressure" class="form-label">Pressure (hPa)</label>
+                                <input type="number" class="form-control" id="pressure" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Assess Risk</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Risk Assessment Results</h5>
+                    </div>
+                    <div class="card-body" id="risk-results">
+                        <div class="alert alert-info">
+                            Enter weather data to see risk assessment results.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Historical Weather Data</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="weather-plot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('risk-assessment-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                temperature: parseFloat(document.getElementById('temperature').value),
+                humidity: parseFloat(document.getElementById('humidity').value),
+                wind_speed: parseFloat(document.getElementById('wind-speed').value),
+                precipitation: parseFloat(document.getElementById('precipitation').value),
+                pressure: parseFloat(document.getElementById('pressure').value)
+            };
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                
+                const resultHtml = `
+                    <div class="alert risk-${result.risk_level.toLowerCase()}">
+                        <h4>Risk Level: ${result.risk_level}</h4>
+                        <p>Confidence: ${(result.confidence * 100).toFixed(2)}%</p>
+                        <h5>Recommendations:</h5>
+                        <ul>
+                            ${result.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+
+                document.getElementById('risk-results').innerHTML = resultHtml;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('risk-results').innerHTML = `
+                    <div class="alert alert-danger">
+                        Error processing request. Please try again.
+                    </div>
+                `;
+            }
+        });
+
+        // Example plot using Plotly
+        const trace = {
+            x: Array.from({length: 100}, (_, i) => new Date(Date.now() - i * 3600000)),
+            y: Array.from({length: 100}, () => Math.random() * 30),
+            type: 'scatter',
+            name: 'Temperature'
+        };
+
+        const layout = {
+            title: 'Temperature Over Time',
+            xaxis: {
+                title: 'Time'
+            },
+            yaxis: {
+                title: 'Temperature (°C)'
+            }
+        };
+
+        Plotly.newPlot('weather-plot', [trace], layout);
+    </script>
+</body>
+</html>
