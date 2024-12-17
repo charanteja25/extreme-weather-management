@@ -6,6 +6,7 @@ from typing import Tuple, Dict
 class WeatherDataProcessor:
     def __init__(self):
         self.scaler = StandardScaler()
+        self.feature_columns = ['temperature', 'humidity', 'wind_speed', 'precipitation', 'pressure', 'hour']
         
     def load_data(self, file_path: str) -> pd.DataFrame:
         """
@@ -44,52 +45,59 @@ class WeatherDataProcessor:
         # Convert timestamp to datetime
         df['timestamp'] = pd.to_datetime(df['timestamp'])
         
-        # Handle missing values
+        df = df.copy()
         df = self._handle_missing_values(df)
-        
-        # Add derived features
-        df = self._add_derived_features(df)
-        
-        # Remove outliers
         df = self._remove_outliers(df)
+        df = self._add_derived_features(df)
         
         return df
     
     def _handle_missing_values(self, df: pd.DataFrame) -> pd.DataFrame:
         """Handle missing values in the dataset"""
-        # Fill missing values with forward fill, then backward fill
-        numeric_columns = df.select_dtypes(include=[np.number]).columns
-        df[numeric_columns] = df[numeric_columns].fillna(method='ffill').fillna(method='bfill')
+        df = df.copy()
+        numeric_columns = ['temperature', 'humidity', 'wind_speed', 'precipitation', 'pressure']
         
-        # If any missing values remain, fill with column mean
-        df[numeric_columns] = df[numeric_columns].fillna(df[numeric_columns].mean())
+        # Forward fill then backward fill for missing values
+        df[numeric_columns] = df[numeric_columns].ffill().bfill()
+        
+        return df
+    
+    def _remove_outliers(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Remove or adjust extreme outliers"""
+        df = df.copy()
+        
+        # Define reasonable limits for each feature
+        limits = {
+            'temperature': (-30, 50),  # °C
+            'humidity': (0, 100),      # %
+            'wind_speed': (0, 200),    # km/h
+            'precipitation': (0, 500),  # mm
+            'pressure': (900, 1100)    # hPa
+        }
+        
+        # Clip values to their reasonable ranges
+        for column, (min_val, max_val) in limits.items():
+            if column in df.columns:
+                df[column] = df[column].clip(min_val, max_val)
         
         return df
     
     def _add_derived_features(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Add derived features to the dataset"""
-        # Add time-based features
+        """Add derived features like hour, month, and weather score"""
+        df = df.copy()
+        
+        # Extract time-based features
         df['hour'] = df['timestamp'].dt.hour
-        df['day_of_week'] = df['timestamp'].dt.dayofweek
         df['month'] = df['timestamp'].dt.month
         
-        # Add weather condition score (example)
+        # Calculate weather score (example: higher score means more severe weather)
         df['weather_score'] = (
-            df['temperature'] * 0.3 +
-            df['wind_speed'] * 0.3 +
-            df['precipitation'] * 0.4
+            ((df['temperature'] - 20).abs() / 10) +  # Temperature deviation from 20°C
+            (df['wind_speed'] / 20) +                # Wind contribution
+            (df['precipitation'] * 2) +              # Precipitation contribution
+            ((df['humidity'] - 60).abs() / 20)       # Humidity deviation from 60%
         )
         
-        return df
-    
-    def _remove_outliers(self, df: pd.DataFrame, threshold: float = 3) -> pd.DataFrame:
-        """Remove outliers using z-score method"""
-        numeric_columns = df.select_dtypes(include=[np.number]).columns
-        
-        for column in numeric_columns:
-            z_scores = np.abs((df[column] - df[column].mean()) / df[column].std())
-            df = df[z_scores < threshold]
-            
         return df
     
     def prepare_features(self, df: pd.DataFrame) -> Tuple[np.ndarray, list]:
@@ -102,13 +110,12 @@ class WeatherDataProcessor:
         Returns:
             Tuple containing feature array and feature names
         """
-        feature_columns = ['temperature', 'humidity', 'wind_speed', 
-                         'precipitation', 'pressure', 'weather_score']
+        df = df.copy()
         
-        # Scale features
-        X = self.scaler.fit_transform(df[feature_columns])
+        # Scale the features
+        X = self.scaler.fit_transform(df[self.feature_columns])
         
-        return X, feature_columns
+        return X, self.feature_columns
     
     def get_feature_importance(self, model, feature_names: list) -> Dict[str, float]:
         """

@@ -3,13 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Risk Management System</title>
+    <title>Extreme Weather Management System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         .risk-low { background-color: #90EE90; }
         .risk-medium { background-color: #FFD700; }
         .risk-high { background-color: #FF6B6B; }
+        .visualization-container {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            margin: 20px 0;
+        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .visualization-card {
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+            padding: 15px;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        iframe {
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+        }
+        .nav-tabs {
+            margin-bottom: 20px;
+        }
+        .tab-content {
+            min-height: 650px;
+        }
     </style>
 </head>
 <body>
@@ -75,6 +131,47 @@
                     </div>
                     <div class="card-body">
                         <div id="weather-plot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="visualization-container">
+            <h2>Current Weather Conditions</h2>
+            <div class="iframe-container">
+                <iframe src="weather_map.html" title="Weather Map"></iframe>
+            </div>
+        </div>
+
+        <div class="visualization-container">
+            <h2>Weather Trends</h2>
+            <div class="iframe-container">
+                <iframe src="weather_trends.html" title="Weather Trends"></iframe>
+            </div>
+        </div>
+
+        <div class="row visualization-card">
+            <div class="col-12">
+                <div class="card-header">
+                    <h3>Interactive Weather Visualizations</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="mapTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="map-tab" data-bs-toggle="tab" data-bs-target="#map" type="button" role="tab">Weather Map</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="trends-tab" data-bs-toggle="tab" data-bs-target="#trends" type="button" role="tab">Weather Trends</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="mapTabsContent">
+                        <div class="tab-pane fade show active" id="map" role="tabpanel">
+                            <iframe src="weather_map.html" height="600"></iframe>
+                        </div>
+                        <div class="tab-pane fade" id="trends" role="tabpanel">
+                            <iframe src="weather_trends.html" height="600"></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -146,5 +243,6 @@
 
         Plotly.newPlot('weather-plot', [trace], layout);
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
