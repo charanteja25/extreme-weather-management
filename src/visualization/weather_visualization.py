@@ -54,7 +54,7 @@ def generate_sample_weather_data():
     
     return pd.DataFrame(data)
 
-def create_temperature_heatmap(data):
+def create_temperature_heatmap(data, return_fig=False):
     """Create a temperature heatmap across cities and time"""
     # Convert timestamp to hour
     data['hour'] = data['timestamp'].dt.hour
@@ -75,10 +75,13 @@ def create_temperature_heatmap(data):
     plt.xlabel('Hour of Day')
     plt.ylabel('City')
     plt.tight_layout()
-    plt.savefig('static/temperature_heatmap.png', dpi=300, bbox_inches='tight')
+    
+    if return_fig:
+        return plt.gcf()
+    plt.savefig('../static/temperature_heatmap.png', dpi=300, bbox_inches='tight')
     plt.close()
 
-def create_weather_distributions(data):
+def create_weather_distributions(data, return_fig=False):
     """Create distribution plots for different weather metrics"""
     fig, axes = plt.subplots(2, 2, figsize=(15, 12))
     fig.suptitle('Weather Metrics Distribution by City', fontsize=16)
@@ -104,10 +107,13 @@ def create_weather_distributions(data):
     axes[1,1].set_title('Precipitation Distribution')
     
     plt.tight_layout()
-    plt.savefig('static/weather_distributions.png', dpi=300, bbox_inches='tight')
+    
+    if return_fig:
+        return fig
+    plt.savefig('../static/weather_distributions.png', dpi=300, bbox_inches='tight')
     plt.close()
 
-def create_correlation_matrix(data):
+def create_correlation_matrix(data, return_fig=False):
     """Create a correlation matrix heatmap of weather metrics"""
     # Calculate mean values for each city
     city_means = data.groupby('city').agg({
@@ -132,10 +138,13 @@ def create_correlation_matrix(data):
     
     plt.title('Correlation Matrix of Weather Metrics')
     plt.tight_layout()
-    plt.savefig('static/correlation_matrix.png', dpi=300, bbox_inches='tight')
+    
+    if return_fig:
+        return plt.gcf()
+    plt.savefig('../static/correlation_matrix.png', dpi=300, bbox_inches='tight')
     plt.close()
 
-def create_time_series_plot(data):
+def create_time_series_plot(data, return_fig=False):
     """Create time series plots for each weather metric"""
     metrics = ['temperature', 'humidity', 'wind_speed', 'precipitation']
     
@@ -149,10 +158,13 @@ def create_time_series_plot(data):
         axes[i].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
         
     plt.tight_layout()
-    plt.savefig('static/time_series.png', dpi=300, bbox_inches='tight')
+    
+    if return_fig:
+        return fig
+    plt.savefig('../static/time_series.png', dpi=300, bbox_inches='tight')
     plt.close()
 
-def create_pair_plot(data):
+def create_pair_plot(data, return_fig=False):
     """Create a pair plot to show relationships between weather metrics"""
     # Calculate hourly means for each city to reduce data points
     hourly_means = data.groupby(['city', data['timestamp'].dt.hour]).agg({
@@ -171,10 +183,13 @@ def create_pair_plot(data):
     
     pair_plot.fig.suptitle('Relationships Between Weather Metrics', y=1.02)
     plt.tight_layout()
-    pair_plot.savefig('static/pair_plot.png', dpi=300, bbox_inches='tight')
+    
+    if return_fig:
+        return pair_plot.fig
+    pair_plot.savefig('../static/pair_plot.png', dpi=300, bbox_inches='tight')
     plt.close()
 
-def create_weather_map(data):
+def create_weather_map(data, return_map=False):
     """Create an interactive map with weather information"""
     # Get the latest data for each city
     latest_data = data.groupby('city').last().reset_index()
@@ -204,8 +219,9 @@ def create_weather_map(data):
             fill=True
         ).add_to(m)
     
-    # Save map
-    m.save('static/weather_map.html')
+    if return_map:
+        return m
+    m.save('../static/weather_map.html')
 
 def main():
     # Set the style for all plots

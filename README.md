@@ -91,3 +91,46 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **Author**: Venkata Charan Teja Gunisetty
 - **Email**: charanteja.teja25@gmail.com
 - **LinkedIn**: [Charan Teja Gunisetty](https://www.linkedin.com/in/charantejagunisetty/)
+
+## Interactive Weather Dashboard
+
+The project now includes an interactive weather analytics dashboard built with Streamlit and Plotly. The dashboard provides:
+
+- Real-time weather data visualization
+- Interactive filtering by date and city
+- Multiple visualization types:
+  - Temperature heatmaps
+  - Weather metric distributions
+  - Correlation analysis
+  - Time series analysis
+  - Geographic distribution
+
+### Running the Dashboard
+
+1. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. Start the Streamlit server:
+   ```bash
+   cd extreme-weather-management
+   streamlit run src/streamlit_app.py
+   ```
+
+3. Open your browser and navigate to http://localhost:8501
+
+### Dashboard Features
+
+- **Overview Tab**: View temperature variations and weather metric distributions
+- **Detailed Analysis Tab**: Explore correlations and time series patterns
+- **Geographic View Tab**: Interactive map showing weather conditions by location
+
+### Filtering and Interaction
+
+- Use the sidebar to select date ranges and cities
+- Interact with visualizations:
+  - Hover over data points for detailed information
+  - Click and drag to zoom
+  - Double-click to reset view
+  - Download options for each chart
