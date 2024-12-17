@@ -92,6 +92,124 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **Email**: charanteja.teja25@gmail.com
 - **LinkedIn**: [Charan Teja Gunisetty](https://www.linkedin.com/in/charantejagunisetty/)
 
+## Streamlit Dashboard 🎯
+
+### About Streamlit
+Streamlit is an open-source Python library that makes it easy to create beautiful, interactive web applications for data science and machine learning. Our dashboard leverages Streamlit's capabilities to provide:
+
+- **Real-time Interactivity**: Dynamic filtering and updates without page reloads
+- **Rich Data Visualizations**: Integration with Plotly for advanced charts
+- **Responsive Layout**: Automatic mobile-friendly design
+- **Easy Deployment**: Simple deployment to cloud platforms
+
+### Dashboard Architecture
+
+The dashboard is built using:
+- **Streamlit**: For the web interface and interactivity
+- **Plotly**: For interactive data visualizations
+- **Folium**: For geographic mapping
+- **Pandas**: For data manipulation and analysis
+
+### Key Features
+
+1. **Interactive Data Filters**
+   - Date range selection
+   - City-based filtering
+   - Real-time updates
+
+2. **Visualization Types**
+   - Temperature Heatmaps
+   - Weather Distribution Plots
+   - Correlation Analysis
+   - Time Series Trends
+   - Geographic Distribution
+   - Scatter Matrix Analysis
+
+3. **Analysis Tabs**
+   - Overview: Quick insights and summaries
+   - Detailed Analysis: In-depth metrics and correlations
+   - Geographic View: Location-based weather patterns
+
+### Installation and Setup
+
+1. **Prerequisites**
+   ```bash
+   # Ensure you have Python 3.8+ installed
+   python --version
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the Dashboard**
+   ```bash
+   cd extreme-weather-management
+   streamlit run src/streamlit_app.py
+   ```
+
+### Usage Guide
+
+1. **Starting the Dashboard**
+   - Execute the run command above
+   - Dashboard will open in your default browser
+   - Default address: http://localhost:8501
+
+2. **Navigation**
+   - Use the sidebar for filtering options
+   - Switch between tabs for different analyses
+   - Interact with charts:
+     * Hover for detailed information
+     * Click and drag to zoom
+     * Double-click to reset view
+     * Download data or images
+
+3. **Data Filtering**
+   - Select date range from the calendar
+   - Choose specific cities
+   - All visualizations update automatically
+
+4. **Customization**
+   - Dark/Light mode toggle
+   - Full-screen view for charts
+   - Download options for visualizations
+
+### Performance Tips
+
+- **Data Loading**: Initial load may take a few seconds
+- **Filtering**: Apply city filters first for faster performance
+- **Memory Usage**: Clear browser cache if performance degrades
+- **Best Practice**: Limit date range for smoother experience
+
+### Troubleshooting
+
+Common issues and solutions:
+1. **Dashboard Not Loading**
+   - Check if all dependencies are installed
+   - Verify Python version compatibility
+   - Clear browser cache
+
+2. **Slow Performance**
+   - Reduce date range selection
+   - Filter specific cities
+   - Close unused browser tabs
+
+3. **Visualization Issues**
+   - Refresh the page
+   - Update your browser
+   - Check console for errors
+
+### Future Enhancements
+
+Planned features:
+- Advanced analytics capabilities
+- Custom metric calculations
+- Export functionality
+- API integration
+- User authentication
+- Custom themes
+
 ## Interactive Weather Dashboard
 
 The project now includes an interactive weather analytics dashboard built with Streamlit and Plotly. The dashboard provides:
