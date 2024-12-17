@@ -13,16 +13,19 @@ A deep learning-based system for real-time weather risk assessment and predictio
 ## 🏗️ Project Structure
 ```
 extreme-weather-management/
-├── data/                      # Data files and preprocessing scripts
-├── models/                    # Trained models and model architectures
-├── notebooks/                 # Jupyter notebooks for analysis
-├── src/                      # Source code
-│   ├── data_processing/      # Data processing utilities
-│   ├── model/                # Model implementation
-│   ├── visualization/        # Visualization tools
-│   └── api/                  # API endpoints
-├── tests/                    # Unit tests
-└── docs/                     # Documentation
+├── src/
+│   ├── api/              # API endpoints and routes
+│   ├── models/           # ML models and data structures
+│   ├── tests/            # Test files
+│   ├── utils/            # Utility functions
+│   └── visualizations/   # Visualization dashboards and tools
+│       ├── streamlit/    # Streamlit interactive dashboard
+│       ├── tableau/      # Tableau Public dashboard and data
+│       └── README.md     # Visualization documentation
+├── data/                 # Data files and datasets
+├── docs/                 # Documentation files
+├── requirements.txt      # Project dependencies
+└── README.md            # Main project documentation
 ```
 
 ## 🛠️ Technology Stack
@@ -91,6 +94,24 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **Author**: Venkata Charan Teja Gunisetty
 - **Email**: charanteja.teja25@gmail.com
 - **LinkedIn**: [Charan Teja Gunisetty](https://www.linkedin.com/in/charantejagunisetty/)
+
+## Visualization Tools
+
+This project includes multiple visualization options:
+
+1. **Streamlit Dashboard** (`src/visualizations/streamlit/`)
+   - Interactive web-based dashboard
+   - Real-time data updates
+   - Multiple visualization types
+   - [Learn more](src/visualizations/README.md#streamlit-dashboard)
+
+2. **Tableau Public Dashboard** (`src/visualizations/tableau/`)
+   - Rich interactive features
+   - No installation required
+   - Shareable visualizations
+   - [Learn more](src/visualizations/README.md#tableau-public-dashboard)
+
+Choose the visualization tool that best suits your needs. See the [visualizations README](src/visualizations/README.md) for detailed setup and usage instructions.
 
 ## Streamlit Dashboard 🎯
 
@@ -252,3 +273,59 @@ The project now includes an interactive weather analytics dashboard built with S
   - Click and drag to zoom
   - Double-click to reset view
   - Download options for each chart
+
+## Alternative Visualization Options
+
+### Tableau Public Dashboard
+
+We've created a complementary Tableau Public dashboard for this project. You can access it here: [Weather Analytics Dashboard on Tableau Public](https://public.tableau.com/app/profile/your.profile/viz/weather-analytics-dashboard)
+
+To use the Tableau dashboard:
+
+1. **Access the Dashboard**
+   - Click the link above to view the interactive dashboard
+   - No installation required
+   - Works in any modern web browser
+
+2. **Features Available in Tableau Version**
+   - Geographic Heat Maps
+   - Temperature Trends
+   - Weather Patterns Analysis
+   - Custom Filters and Parameters
+   - Interactive Tooltips
+   - Cross-filtering Capabilities
+
+3. **Create Your Own Version**
+   1. Download Tableau Public (free) from [tableau.com/products/public](https://www.tableau.com/products/public)
+   2. Use our exported data file: `src/data/weather_data_for_tableau.csv`
+   3. Import the data into Tableau Public
+   4. Use our dashboard as a template or create your own visualizations
+
+4. **Key Visualizations**
+   - Weather Metrics Overview
+   - Temporal Analysis Dashboard
+   - Geographic Distribution
+   - Correlation Analysis
+   - Custom Calculations
+
+5. **Tableau-Specific Features**
+   - Story Points for guided analysis
+   - Advanced filtering options
+   - Custom calculated fields
+   - Dynamic parameters
+   - Mobile-responsive layout
+
+### Comparing Visualization Options
+
+| Feature | Streamlit | Tableau Public |
+|---------|-----------|----------------|
+| Installation | Required | Not required |
+| Data Updates | Real-time | Manual refresh |
+| Customization | Full code control | Drag-and-drop |
+| Hosting | Self-hosted | Free cloud hosting |
+| Learning Curve | Python knowledge needed | More intuitive |
+| Integration | Easy with Python | Limited |
+
+Choose the visualization tool that best suits your needs:
+- Use **Streamlit** for real-time, programmatic control
+- Use **Tableau Public** for quick, no-code visualizations
